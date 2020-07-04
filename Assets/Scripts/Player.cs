@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public float earthGravity = 9.8f;
+    public float moonGravity = 1.62f;
     public float force;
-    Rigidbody2D thruster;
-    Vector2 thrusterForce;
+    public float rotationSpeed;
+
     bool isThrusterActivated = false;
-    float moonGravity = 1.62f;
-    float earthGravity = 9.8f;
-    float relativeMoonGravity;
     float originalGravityScale = 1;
     float newGravityScale;
-    Vector2 gravity;
+    float angle = 0;
+    float maxSpeed = 1;
+    Rigidbody2D thruster;
+    Vector2 thrusterForce;
+
     void Start()
     {
         thruster = GetComponent<Rigidbody2D>();
-        gravity = new Vector2(0, moonGravity);
         newGravityScale = (moonGravity * originalGravityScale) / earthGravity; //rule of three
         thruster.gravityScale = newGravityScale; // simulation of moon gravity
 
@@ -25,6 +27,16 @@ public class Player : MonoBehaviour
     void Update()
     {
         thrusterForce = new Vector2(0, force);
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            angle -= rotationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));   
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            angle += rotationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
         if (Input.GetKey(KeyCode.Space))
         {
             isThrusterActivated = true;
@@ -33,12 +45,20 @@ public class Player : MonoBehaviour
         {
             isThrusterActivated = false;
         }
+        if(thruster.velocity.magnitude > maxSpeed)
+        {
+            thruster.velocity = Vector2.ClampMagnitude(thruster.velocity, maxSpeed);
+        }
+        if(thruster.velocity.magnitude < -maxSpeed)
+        {
+            thruster.velocity = Vector2.ClampMagnitude(thruster.velocity, -maxSpeed);
+        }
     }
     void FixedUpdate()
     {
-        if(isThrusterActivated)
+        if (isThrusterActivated)
         {
-            thruster.AddForce(thrusterForce);
+            thruster.AddRelativeForce(thrusterForce);
         }
     }
 }
