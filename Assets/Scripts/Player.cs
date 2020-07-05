@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] float fuel;
     [SerializeField] float fuelCost;
     [SerializeField] float maxSpeed = 2;
+    [SerializeField] int lostFuel;
     public Rigidbody2D thruster;
 
 
@@ -201,6 +204,11 @@ public class Player : MonoBehaviour
         return isAlive;
     }
 
+    public int GetLostFuel()
+    {
+        return lostFuel;
+    }
+
     //Collisions
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -227,6 +235,12 @@ public class Player : MonoBehaviour
             landedx5();
             isAlive = false;
             land();
+        }
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isAlive = false;
+            fuel -= lostFuel;
+            die();
         }
     }
 

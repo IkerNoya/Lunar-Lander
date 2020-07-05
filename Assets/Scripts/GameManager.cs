@@ -73,7 +73,8 @@ public class GameManager : MonoBehaviour
     }
     void Die()
     {
-
+        SceneManager.LoadScene("Crashed", LoadSceneMode.Additive);
+        Time.timeScale = 0;
     }
     void OutOfFuel()
     {
