@@ -11,6 +11,8 @@ public class LevelLoader : MonoBehaviour
     float progressAmmount;
     float loadingProgress;
     float timeLoading;
+    public delegate void LoadedLevel();
+    public static event LoadedLevel loaded;
     private void Start()
     {
         StartCoroutine(LoadAsyncOperation());
@@ -36,6 +38,8 @@ public class LevelLoader : MonoBehaviour
             if(loadingProgress>=1)
             {
                 level.allowSceneActivation = true;
+                if (loaded != null)
+                    loaded();
             }
             yield return null;
         }

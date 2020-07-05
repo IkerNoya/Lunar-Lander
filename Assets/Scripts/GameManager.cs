@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public int levelChoice = 100;
     int score = 0;
     float timer;
+    
 
     public static GameManager Get()
     {
@@ -44,13 +46,13 @@ public class GameManager : MonoBehaviour
         Player.landedx5 += AddScoreX5;
         Player.die += Die;
         Player.outOfFuel += OutOfFuel;
+        Player.land += Land;
+        LevelLoader.loaded += FindPlayer;
     }
 
     private void Update()
     {
-        if (!player.GetAlive())
-            return;
-        timer += Time.deltaTime;
+
     }
 
     void AddScore()
@@ -77,7 +79,22 @@ public class GameManager : MonoBehaviour
     {
 
     }
-
+    void Land()
+    {
+        SceneManager.LoadScene("Landed",LoadSceneMode.Additive);
+        Time.timeScale = 0;
+    }
+    void FindPlayer()
+    {
+        StartCoroutine(FindP());
+    }
+    IEnumerator FindP()
+    {
+        yield return new WaitForSeconds(0.2f);
+        player = FindObjectOfType<Player>();
+        StopCoroutine(FindP());
+        yield return null;
+    }
     public int SelectLevel()
     {
         Random.InitState(System.DateTime.Now.Millisecond);
@@ -86,6 +103,12 @@ public class GameManager : MonoBehaviour
         currentLevelSelection = levelChoice;
         return levelChoice;
     }
+    public void ResetValues()
+    {
+        SelectLevel();
+        player.Respawn();
+        timer = 0;
+    }
 
     private void OnDisable()
     {
@@ -93,5 +116,9 @@ public class GameManager : MonoBehaviour
         Player.landedx2 -= AddScoreX2;
         Player.landedx4 -= AddScoreX4;
         Player.landedx5 -= AddScoreX5;
+        Player.die -= Die;
+        Player.outOfFuel -= OutOfFuel;
+        Player.land -= Land;
+        LevelLoader.loaded -= FindPlayer;
     }
 }

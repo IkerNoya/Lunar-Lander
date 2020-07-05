@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] float rayRange;
     [SerializeField] float fuel;
     [SerializeField] float fuelCost;
+    [SerializeField] float maxSpeed = 2;
+    public Rigidbody2D thruster;
 
 
     bool isThrusterActivated = false;
@@ -22,12 +24,11 @@ public class Player : MonoBehaviour
     float originalGravityScale = 1;
     float newGravityScale;
     float angle = 0;
-    float maxSpeed = 2;
     float altitude;
 
-    Rigidbody2D thruster;
     Vector2 thrusterForce;
     Animator anim;
+    Vector2 initialPos;
 
     public delegate void CameraZoom();
     public static event CameraZoom camZoom;
@@ -39,9 +40,11 @@ public class Player : MonoBehaviour
     public static event Landing landedx4;
     public static event Landing landedx5;
 
-    public delegate void Loose();
-    public static event Loose die;
-    public static event Loose outOfFuel;
+    public delegate void End();
+    public static event End die;
+    public static event End outOfFuel;
+    public static event End land;
+    
 
     void Start()
     {
@@ -50,10 +53,12 @@ public class Player : MonoBehaviour
         newGravityScale = (moonGravity * originalGravityScale) / earthGravity; //rule of three
         thruster.gravityScale = newGravityScale; // simulation of moon gravity
         anim = GetComponent<Animator>();
+        initialPos = new Vector2(transform.position.x, transform.position.y);
     }
     void Update()
     {
-
+        if (!isAlive)
+            return;
         thrusterForce = new Vector2(0, force);
         if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -110,7 +115,6 @@ public class Player : MonoBehaviour
         {
             altitude = Mathf.Abs(hit.point.y - transform.position.y);
         }
-        Debug.Log(altitude);
         if (!isMoving)
         {
             ActivateAnim("isIdle");
@@ -204,21 +208,38 @@ public class Player : MonoBehaviour
         {
             landed();
             isAlive = false;
+            land();
         }
         if (collision.gameObject.CompareTag("PlatformX2"))
         {
             landedx2();
             isAlive = false;
+            land();
         }
         if (collision.gameObject.CompareTag("PlatformX4"))
         {
             landedx4();
             isAlive = false;
+            land();
         }
         if (collision.gameObject.CompareTag("PlatformX5"))
         {
             landedx5();
             isAlive = false;
+            land();
         }
+    }
+
+    //External functions
+    public void Respawn()
+    {
+        transform.position = new Vector3(initialPos.x, initialPos.y, 0);
+        isAlive = true;
+        isMoving = false;
+        thruster.velocity = Vector3.zero;
+        thruster.angularVelocity = 0;
+        thruster.angularDrag = 0.05f;
+        transform.rotation = Quaternion.identity;
+        angle = 0;
     }
 }

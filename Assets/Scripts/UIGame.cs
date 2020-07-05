@@ -12,6 +12,7 @@ public class UIGame : MonoBehaviour
     public Text VerticalSpeedText;
     public Text timerText;
     public Player player;
+    public Rigidbody2D playerRB;
 
     int fuel;
     int score;
@@ -21,7 +22,6 @@ public class UIGame : MonoBehaviour
     float timer;
 
     GameManager manager;
-    Rigidbody2D playerRB;
 
     void Start()
     {
@@ -30,7 +30,9 @@ public class UIGame : MonoBehaviour
 
     void Update()
     {
-        playerRB = player.GetRigidbody();
+        if (!player.GetAlive())
+            return;
+        timer += Time.deltaTime;
         fuel = (int)player.GetFuel();
         altitude = player.GetAltitude();
         score = manager.GetScore();
@@ -44,7 +46,5 @@ public class UIGame : MonoBehaviour
         horizontalSpeedText.text = "Horizontal Speed: " + horizontalSpeed.ToString("F2");
         VerticalSpeedText.text = "Vertical Speed: " + verticalSpeed.ToString("F2");
         timerText.text = "Time: " + timer.ToString("F2");
-        Debug.Log(horizontalSpeed);
-        Debug.Log(verticalSpeed);
     }
 }
