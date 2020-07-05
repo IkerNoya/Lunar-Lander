@@ -81,16 +81,14 @@ public class Player : MonoBehaviour
         {
             thruster.AddRelativeForce(thrusterForce);
         }
-        if(Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, rayRange, mountains)|| Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, rayRange, platforms))
+        if(Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, rayRange, mountains) || Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, rayRange, platforms))
         {
-            Debug.DrawRay(transform.position, Vector3.down, Color.red);
             camZoom();
         }
         else
         {
             camZoomOut();
         }
-        Debug.DrawRay(transform.position, Vector3.down);
     }
     void PlayAnimations()
     {

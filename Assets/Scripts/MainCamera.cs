@@ -7,7 +7,6 @@ public class MainCamera : MonoBehaviour
 {
     public Transform player;
     Vector3 offset;
-    Camera cam;
     Vector3 initialPos;
     void Start()
     {
@@ -24,11 +23,11 @@ public class MainCamera : MonoBehaviour
 
     void FollowPlayer()
     {
-        transform.position = Vector3.Lerp(transform.position ,player.position + offset, 0.85f);
+        transform.position = Vector3.Lerp(transform.position ,player.position + offset, 0.5f);
     }
     void ZoomOut()
     {
-        transform.position = initialPos;
+        transform.position = Vector3.Lerp(transform.position, initialPos, 0.5f);
     }
     private void OnDisable()
     {
