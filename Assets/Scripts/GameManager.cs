@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!player.GetAlive())
+        if (player != null && !player.GetAlive())
             return;
         timer += Time.deltaTime;
     }
@@ -120,7 +120,8 @@ public class GameManager : MonoBehaviour
     }
     public void StartTimer()
     {
-        player.SetAlive(true);
+        if(player!=null)
+            player.SetAlive(true);
         RestartTimer(timer);
     }
 
