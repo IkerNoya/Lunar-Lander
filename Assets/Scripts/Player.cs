@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (!isAlive)
+        if (!isAlive || Time.timeScale==0)
             return;
         thrusterForce = new Vector2(0, force);
         if (Input.GetKey(KeyCode.RightArrow))
@@ -116,6 +116,8 @@ public class Player : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (!isAlive || Time.timeScale == 0)
+            return;
         if (isThrusterActivated)
         {
             thruster.AddRelativeForce(thrusterForce);

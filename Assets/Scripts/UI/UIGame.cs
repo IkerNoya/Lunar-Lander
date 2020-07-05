@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIGame : MonoBehaviour
 {
@@ -26,6 +27,14 @@ public class UIGame : MonoBehaviour
     void Start()
     {
         manager = GameManager.Get();
+    }
+    public void OnClickPause() 
+    {
+        if (Time.timeScale == 1)
+        {
+            SceneManager.LoadScene("Pause", LoadSceneMode.Additive);
+            Time.timeScale = 0;
+        }
     }
 
     void Update()

@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public Player player;
-
     public int currentLevelSelection = 100;
     public int levelChoice = 100;
     int score = 0;
@@ -124,7 +123,10 @@ public class GameManager : MonoBehaviour
             player.SetAlive(true);
         RestartTimer(timer);
     }
+    public void ActivateLevelManager()
+    {
 
+    }
     private void OnDisable()
     {
         Player.landed -= AddScore;

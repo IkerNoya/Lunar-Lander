@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
     public List<GameObject> levels = new List<GameObject>();
     int choice = 0;
     GameManager manager;
-    void Start()
+    void Update()
     {
         manager = GameManager.Get();
         levels[0].SetActive(false);
@@ -19,4 +19,5 @@ public class LevelManager : MonoBehaviour
             choice = 2;
         levels[choice].SetActive(true);
     }
+
 }
