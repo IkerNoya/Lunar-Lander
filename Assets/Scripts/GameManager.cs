@@ -21,11 +21,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    private void Start()
-    {
-        SelectLevel();
-    }
-    int SelectLevel()
+    public int SelectLevel()
     {
         Random.InitState(System.DateTime.Now.Millisecond);
         levelChoice = Random.Range(0, 3);

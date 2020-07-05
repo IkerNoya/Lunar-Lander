@@ -19,8 +19,4 @@ public class LevelManager : MonoBehaviour
             choice = 2;
         levels[choice].SetActive(true);
     }
-    private void Update()
-    {
-        
-    }
 }

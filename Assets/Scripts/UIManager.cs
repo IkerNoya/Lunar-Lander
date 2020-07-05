@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    GameManager Manager;
+    private void Start()
+    {
+        Manager = GameManager.Get();
+    }
     public void ClickOnPlay()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Loading Level");
+        Manager.SelectLevel();
     }
     public void ClickOnCredits()
     {
