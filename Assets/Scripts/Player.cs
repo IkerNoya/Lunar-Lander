@@ -232,33 +232,42 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            landed();
+            if(landed!=null)
+                landed();
             isAlive = false;
-            land();
+            if(land!=null)
+                land();
         }
         if (collision.gameObject.CompareTag("PlatformX2"))
         {
-            landedx2();
+            if (landedx2 != null)
+                landedx2();
             isAlive = false;
-            land();
+            if (land != null)
+                land();
         }
         if (collision.gameObject.CompareTag("PlatformX4"))
         {
-            landedx4();
+            if (landedx4 != null)
+                landedx4();
             isAlive = false;
-            land();
+            if (land != null)
+                land();
         }
         if (collision.gameObject.CompareTag("PlatformX5"))
         {
-            landedx5();
+            if(landedx5 != null)
+                landedx5();
             isAlive = false;
-            land();
+            if (land != null)
+                land();
         }
         if (collision.gameObject.CompareTag("Ground"))
         {
             isAlive = false;
             fuel -= lostFuel;
-            die();
+            if(die!=null)
+                die();
         }
     }
 
