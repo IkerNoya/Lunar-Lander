@@ -11,14 +11,16 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         manager = GameManager.Get();
-        Random.InitState(System.DateTime.Now.Millisecond);
-        choice = Random.Range(0, 3);
-        if (choice == 3) choice = 2;
-        manager.currentLevelSelection = choice;
-        foreach (GameObject go in levels)
-        {
-            go.SetActive(false);
-        }
+        levels[0].SetActive(false);
+        levels[1].SetActive(false);
+        levels[2].SetActive(false);
+        choice = manager.levelChoice;
+        if (manager.levelChoice == 3)
+            choice = 2;
         levels[choice].SetActive(true);
+    }
+    private void Update()
+    {
+        
     }
 }

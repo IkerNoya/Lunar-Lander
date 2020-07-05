@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public int currentLevelSelection = 100;
+    public int levelChoice = 100;
    public static GameManager Get()
     {
         return instance;
@@ -19,5 +20,17 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    private void Start()
+    {
+        SelectLevel();
+    }
+    int SelectLevel()
+    {
+        Random.InitState(System.DateTime.Now.Millisecond);
+        levelChoice = Random.Range(0, 3);
+        if (levelChoice == 3) levelChoice = 2;
+        currentLevelSelection = levelChoice;
+        return levelChoice;
     }
 }
