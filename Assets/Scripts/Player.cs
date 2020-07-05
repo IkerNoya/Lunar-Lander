@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     float originalGravityScale = 1;
     float newGravityScale;
     float angle = 0;
-    float maxSpeed = 1;
+    float maxSpeed = 2;
 
     Rigidbody2D thruster;
     Vector2 thrusterForce;
@@ -27,7 +27,11 @@ public class Player : MonoBehaviour
     public delegate void CameraZoom();
     public static event CameraZoom camZoom;
     public static event CameraZoom camZoomOut;
-    
+    public delegate void Landing();
+    public static event Landing landed;
+    public static event Landing landedx2;
+    public static event Landing landedx4;
+    public static event Landing landedx5;
 
     void Start()
     {

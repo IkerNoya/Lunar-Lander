@@ -8,6 +8,7 @@ public class MainCamera : MonoBehaviour
     public Transform player;
     Vector3 offset;
     Vector3 initialPos;
+
     void Start()
     {
         Player.camZoom += FollowPlayer;
