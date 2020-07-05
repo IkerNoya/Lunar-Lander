@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float earthGravity = 9.8f;
-    public float moonGravity = 1.62f;
-    public float force;
-    public float rotationSpeed;
-    public string[] animStrings;
+    [SerializeField] float earthGravity = 9.8f;
+    [SerializeField] float moonGravity = 1.62f;
+    [SerializeField] float force;
+    [SerializeField] float rotationSpeed;
+    [SerializeField] string[] animStrings;
+    [SerializeField] LayerMask mountains;
+    [SerializeField] LayerMask platforms;
+    [SerializeField] float rayRange;
 
     bool isThrusterActivated = false;
     bool isMoving = false;
@@ -20,6 +23,11 @@ public class Player : MonoBehaviour
     Rigidbody2D thruster;
     Vector2 thrusterForce;
     Animator anim;
+    RaycastHit2D hit;
+    public delegate void CameraZoom();
+    public static event CameraZoom camZoom;
+    public static event CameraZoom camZoomOut;
+    
 
     void Start()
     {
@@ -52,6 +60,7 @@ public class Player : MonoBehaviour
             isMoving = false;
             isThrusterActivated = false;
         }
+        
         if(thruster.velocity.magnitude > maxSpeed)
         {
             thruster.velocity = Vector2.ClampMagnitude(thruster.velocity, maxSpeed);
@@ -72,6 +81,16 @@ public class Player : MonoBehaviour
         {
             thruster.AddRelativeForce(thrusterForce);
         }
+        if(Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, rayRange, mountains)|| Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, rayRange, platforms))
+        {
+            Debug.DrawRay(transform.position, Vector3.down, Color.red);
+            camZoom();
+        }
+        else
+        {
+            camZoomOut();
+        }
+        Debug.DrawRay(transform.position, Vector3.down);
     }
     void PlayAnimations()
     {
