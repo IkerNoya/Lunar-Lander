@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D thruster;
     public ParticleSystem part;
 
-
+    float initialFuel;
     bool isThrusterActivated = false;
     bool isMoving = false;
     bool isAlive = false;
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         isAlive = true;
+        initialFuel = fuel;
         thruster = GetComponent<Rigidbody2D>();
         newGravityScale = (moonGravity * originalGravityScale) / earthGravity; //rule of three
         thruster.gravityScale = newGravityScale; // simulation of moon gravity
@@ -105,6 +106,11 @@ public class Player : MonoBehaviour
         {
             ActivateAnim("isIdle");
             part.Stop();
+        }
+        if (fuel <= 0)
+        {
+            outOfFuel();
+            fuel = initialFuel;
         }
         PlayAnimations();
     }
@@ -210,6 +216,10 @@ public class Player : MonoBehaviour
     public bool GetAlive()
     {
         return isAlive;
+    }
+    public void SetAlive(bool a)
+    {
+        isAlive = a;
     }
 
     public int GetLostFuel()

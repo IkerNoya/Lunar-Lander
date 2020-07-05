@@ -79,7 +79,8 @@ public class GameManager : MonoBehaviour
     }
     void OutOfFuel()
     {
-
+        SceneManager.LoadScene("GameOver", LoadSceneMode.Additive);
+        Time.timeScale = 0;
     }
     void Land()
     {
@@ -115,6 +116,11 @@ public class GameManager : MonoBehaviour
         SelectLevel();
         player.Respawn();
         timer = 0;
+        RestartTimer(timer);
+    }
+    public void StartTimer()
+    {
+        player.SetAlive(true);
         RestartTimer(timer);
     }
 

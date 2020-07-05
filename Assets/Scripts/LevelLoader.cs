@@ -7,8 +7,7 @@ public class LevelLoader : MonoBehaviour
 {
     [SerializeField] Slider slider;
     [SerializeField] GameObject loadingScreen;
-
-    float progressAmmount;
+    GameManager manager;
     float loadingProgress;
     float timeLoading;
     public delegate void LoadedLevel();
@@ -16,6 +15,7 @@ public class LevelLoader : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LoadAsyncOperation());
+        manager = GameManager.Get();
     }
 
     IEnumerator LoadAsyncOperation()
@@ -37,6 +37,7 @@ public class LevelLoader : MonoBehaviour
              slider.value = loadingProgress;
             if(loadingProgress>=1)
             {
+                manager.StartTimer();
                 level.allowSceneActivation = true;
                 if (loaded != null)
                     loaded();
