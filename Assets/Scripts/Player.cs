@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
             isMoving = true;
             if (!part.isEmitting)
                 part.Play();
-            fuel -= fuelCost;
+            fuel -= (fuelCost * Time.deltaTime);
         }
         else
         {
