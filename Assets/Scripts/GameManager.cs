@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
+    public int currentLevelSelection = 100;
    public static GameManager Get()
     {
         return instance;
