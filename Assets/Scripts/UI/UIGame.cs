@@ -15,7 +15,7 @@ public class UIGame : MonoBehaviour
     public Player player;
     public Rigidbody2D playerRB;
 
-    int fuel;
+    float fuel;
     int score;
     float altitude;
     float horizontalSpeed;
@@ -40,14 +40,14 @@ public class UIGame : MonoBehaviour
     void Update()
     {
  
-        fuel = (int)player.GetFuel();
+        fuel = player.GetFuel();
         altitude = player.GetAltitude();
         score = manager.GetScore();
         verticalSpeed = Mathf.Abs(playerRB.velocity.y);
         horizontalSpeed = Mathf.Abs(playerRB.velocity.x);
         timer = manager.GetTimer();
         scoreText.text = "Score: " + score.ToString();
-        fuelText.text = "Fuel: " + fuel.ToString();
+        fuelText.text = "Fuel: " + fuel.ToString("F2");
         altitudeText.text = "Altitude: " + altitude.ToString("F2");
         horizontalSpeedText.text = "Horizontal Speed: " + horizontalSpeed.ToString("F2");
         VerticalSpeedText.text = "Vertical Speed: " + verticalSpeed.ToString("F2");
