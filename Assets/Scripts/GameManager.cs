@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     public int levelChoice = 100;
     int score = 0;
     float timer;
-    
 
     public static GameManager Get()
     {
@@ -52,7 +51,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
+        if (!player.GetAlive())
+            return;
+        timer += Time.deltaTime;
     }
 
     void AddScore()
@@ -96,6 +97,11 @@ public class GameManager : MonoBehaviour
         StopCoroutine(FindP());
         yield return null;
     }
+    public float RestartTimer(float t)
+    {
+        t = 0;
+        return t;
+    }
     public int SelectLevel()
     {
         Random.InitState(System.DateTime.Now.Millisecond);
@@ -109,6 +115,7 @@ public class GameManager : MonoBehaviour
         SelectLevel();
         player.Respawn();
         timer = 0;
+        RestartTimer(timer);
     }
 
     private void OnDisable()

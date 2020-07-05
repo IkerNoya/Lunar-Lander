@@ -30,16 +30,13 @@ public class UIGame : MonoBehaviour
 
     void Update()
     {
-        if (!player.GetAlive())
-            return;
-        timer += Time.deltaTime;
+ 
         fuel = (int)player.GetFuel();
         altitude = player.GetAltitude();
         score = manager.GetScore();
         verticalSpeed = Mathf.Abs(playerRB.velocity.y);
         horizontalSpeed = Mathf.Abs(playerRB.velocity.x);
-        timer = manager.GetTimer();    
-
+        timer = manager.GetTimer();
         scoreText.text = "Score: " + score.ToString();
         fuelText.text = "Fuel: " + fuel.ToString();
         altitudeText.text = "Altitude: " + altitude.ToString("F2");

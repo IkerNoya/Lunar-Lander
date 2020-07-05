@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField] float maxSpeed = 2;
     [SerializeField] int lostFuel;
     public Rigidbody2D thruster;
+    public ParticleSystem part;
 
 
     bool isThrusterActivated = false;
@@ -67,18 +68,24 @@ public class Player : MonoBehaviour
         {
             angle -= rotationSpeed * Time.deltaTime;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            if(!part.isEmitting)
+                part.Play();
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             angle += rotationSpeed * Time.deltaTime;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            if (!part.isEmitting)
+                part.Play();
         }
         if (Input.GetKey(KeyCode.Space))
         {
             ActivateAnim("isVertical");
             isThrusterActivated = true;
             isMoving = true;
-
+            if (!part.isEmitting)
+                part.Play();
+            fuel -= fuelCost;
         }
         else
         {
@@ -94,7 +101,11 @@ public class Player : MonoBehaviour
         {
             thruster.velocity = Vector2.ClampMagnitude(thruster.velocity, -maxSpeed);
         }
-
+        if (!isMoving)
+        {
+            ActivateAnim("isIdle");
+            part.Stop();
+        }
         PlayAnimations();
     }
     void FixedUpdate()
@@ -118,10 +129,7 @@ public class Player : MonoBehaviour
         {
             altitude = Mathf.Abs(hit.point.y - transform.position.y);
         }
-        if (!isMoving)
-        {
-            ActivateAnim("isIdle");
-        }
+
 
 
     }
