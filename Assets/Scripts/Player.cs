@@ -12,29 +12,40 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask mountains;
     [SerializeField] LayerMask platforms;
     [SerializeField] float rayRange;
+    [SerializeField] float fuel;
+    [SerializeField] float fuelCost;
+
 
     bool isThrusterActivated = false;
     bool isMoving = false;
+    bool isAlive = false;
     float originalGravityScale = 1;
     float newGravityScale;
     float angle = 0;
     float maxSpeed = 2;
+    float altitude;
 
     Rigidbody2D thruster;
     Vector2 thrusterForce;
     Animator anim;
-    RaycastHit2D hit;
+
     public delegate void CameraZoom();
     public static event CameraZoom camZoom;
     public static event CameraZoom camZoomOut;
+
     public delegate void Landing();
     public static event Landing landed;
     public static event Landing landedx2;
     public static event Landing landedx4;
     public static event Landing landedx5;
 
+    public delegate void Loose();
+    public static event Loose die;
+    public static event Loose outOfFuel;
+
     void Start()
     {
+        isAlive = true;
         thruster = GetComponent<Rigidbody2D>();
         newGravityScale = (moonGravity * originalGravityScale) / earthGravity; //rule of three
         thruster.gravityScale = newGravityScale; // simulation of moon gravity
@@ -42,6 +53,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+
         thrusterForce = new Vector2(0, force);
         if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -58,6 +70,7 @@ public class Player : MonoBehaviour
             ActivateAnim("isVertical");
             isThrusterActivated = true;
             isMoving = true;
+
         }
         else
         {
@@ -73,10 +86,7 @@ public class Player : MonoBehaviour
         {
             thruster.velocity = Vector2.ClampMagnitude(thruster.velocity, -maxSpeed);
         }
-        if(!isMoving)
-        {
-            ActivateAnim("isIdle");
-        }
+
         PlayAnimations();
     }
     void FixedUpdate()
@@ -93,6 +103,20 @@ public class Player : MonoBehaviour
         {
             camZoomOut();
         }
+
+        //check altitude:
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.down, 100, mountains);
+        if (hit.collider != null && (hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Playtform") || hit.collider.CompareTag("PlaytformX2") || hit.collider.CompareTag("PlaytformX4") || hit.collider.CompareTag("PlaytformX5")))
+        {
+            altitude = Mathf.Abs(hit.point.y - transform.position.y);
+        }
+        Debug.Log(altitude);
+        if (!isMoving)
+        {
+            ActivateAnim("isIdle");
+        }
+
+
     }
     void PlayAnimations()
     {
@@ -149,6 +173,52 @@ public class Player : MonoBehaviour
             {
                 anim.SetBool(animStrings[i], false);
             }
+        }
+    }
+
+    //Getters
+    public float GetFuel()
+    {
+        return fuel;
+    }
+
+    public Rigidbody2D GetRigidbody()
+    {
+        return thruster;
+    }
+
+    public float GetAltitude()
+    {
+        return altitude;
+    }
+
+    public bool GetAlive()
+    {
+        return isAlive;
+    }
+
+    //Collisions
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            landed();
+            isAlive = false;
+        }
+        if (collision.gameObject.CompareTag("PlatformX2"))
+        {
+            landedx2();
+            isAlive = false;
+        }
+        if (collision.gameObject.CompareTag("PlatformX4"))
+        {
+            landedx4();
+            isAlive = false;
+        }
+        if (collision.gameObject.CompareTag("PlatformX5"))
+        {
+            landedx5();
+            isAlive = false;
         }
     }
 }
