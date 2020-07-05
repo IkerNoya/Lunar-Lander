@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public void ClickOnPlay()
     {
-        SceneManager.LoadScene("Play");
+        SceneManager.LoadScene("Game");
     }
     public void ClickOnCredits()
     {
