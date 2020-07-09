@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public int levelChoice = 100;
     int score = 0;
     float timer;
+    string name;
 
     public static GameManager Get()
     {
@@ -24,6 +26,14 @@ public class GameManager : MonoBehaviour
     public float GetTimer()
     {
         return timer;
+    }
+    public void SetName(string user)
+    {
+        name = user;
+    }
+    public string GetName()
+    {
+        return name;
     }
 
     void Awake()
@@ -122,10 +132,6 @@ public class GameManager : MonoBehaviour
         if(player!=null)
             player.SetAlive(true);
         RestartTimer(timer);
-    }
-    public void ActivateLevelManager()
-    {
-
     }
     private void OnDisable()
     {

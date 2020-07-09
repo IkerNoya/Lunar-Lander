@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -9,12 +10,6 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    [Serializable]
-    public struct SaveData
-    {
-        public string Name { get; set; }
-        public int Score { get; set; }
-    };
     public struct LoadData
     {
         public string Name { get; set; }
@@ -23,21 +18,25 @@ public class SaveManager : MonoBehaviour
 
     public static void Save(string name, int score)
     {
-        string dataPath = Application.persistentDataPath + "Highscore.dat";
-        SaveData data = new SaveData();
-        data.Name = name;
-        data.Score = score;
+        string dataPath = Application.dataPath + "/Files/Highscore.txt";
         FileStream highscore = File.OpenWrite(dataPath);
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(highscore, data);
+        BinaryWriter bw = new BinaryWriter(highscore);
+        bw.Write(name);
+        bw.Write(score);
+        bw.Close();
+        highscore.Close();
    }
-   public static LoadData Load()
+   public static void Load(ref string name, ref int score)
    {
-        string dataPath = Application.persistentDataPath + "Highscore.dat";
-        LoadData data = new LoadData();
+        string dataPath = Application.dataPath + "/Files/Highscore.txt";
         FileStream highscore = File.OpenRead(dataPath);
-        BinaryFormatter bf = new BinaryFormatter();
-        data = (LoadData)bf.Deserialize(highscore);
-        return data;
-   }
+        BinaryReader bw = new BinaryReader(highscore);
+        LoadData data = new LoadData();
+        data.Name = bw.ReadString();
+        data.Score = bw.ReadInt32();
+        bw.Close();
+        highscore.Close();
+        name = data.Name;
+        score = data.Score;
+    }
 }

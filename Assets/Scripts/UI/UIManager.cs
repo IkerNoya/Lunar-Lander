@@ -27,4 +27,8 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
+    public void ClickOnScores()
+    {
+        SceneManager.LoadScene("Highscores");
+    }
 }
